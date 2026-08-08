@@ -1,0 +1,9 @@
+{
+  "canvas": {"width": 1536, "height": 1152},
+  "mode": "editable_vector_redraw",
+  "keep_raster": ["photos", "book_scans"],
+  "qa": {
+    "pdf_export": true,
+    "pixel_match": true
+  }
+}
