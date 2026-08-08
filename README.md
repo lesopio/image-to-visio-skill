@@ -4,6 +4,61 @@
 
 > 核心原则：不能把整张原图贴进 Visio 冒充“可编辑版”。标题、正文、框、线、箭头、流程节点、表格和关系网络应尽量全部重建为独立 Visio Shape；只有书影、照片、扫描纹理等天然位图区可保留为局部图片。
 
+## 给 Agent / Coding Agent
+
+如果你是 AI Agent、Coding Agent、CLI Agent 或自动化工作流，请先读取根目录的 [`SKILL.md`](./SKILL.md)，并把它当作本仓库的**主执行规范**。
+
+当用户表达以下意图时，优先使用本 Skill：
+
+- “把这张图转成 Visio”
+- “照这个图画一个可编辑 Visio”
+- “图片转可编辑 VSDX”
+- “像素级复刻这个流程图 / 架构图 / 论文插图”
+- “最后导出 PDF 核对是否一致”
+
+Agent 执行时必须遵守以下约束：
+
+1. **不要把整张源图直接铺在可编辑页上冒充矢量结果。**
+2. 标题、正文、表格、矩形、圆角框、箭头、虚线、连接关系等，应尽量重建成独立 Visio Shape。
+3. 只有照片、扫描书影、复杂纹理等天然栅格内容允许保留为局部位图。
+4. 优先从 `templates/known_good_two_page_template.vsdx` 派生，避免手搓极简 VSDX 导致 Microsoft Visio 无法打开。
+5. 完成后必须先运行结构预检，再执行 **VSDX → PDF → PNG** 的 QA。
+6. 像素核对必须比较**真正的可编辑页**，不能拿“原图覆盖页”做匹配结果。
+7. 如果用户明确要求“像素级一致”，优先按原图像素坐标建立布局，再统一映射到 Visio 页面坐标，不要凭英寸目测摆放。
+
+推荐 Agent 最小执行链：
+
+```text
+读取参考图
+  ↓
+分析布局 / 建立像素坐标
+  ↓
+分类：矢量对象 vs 局部位图
+  ↓
+从 known-good VSDX 模板派生
+  ↓
+生成真正可编辑的 Visio Shape
+  ↓
+preflight_vsdx.py
+  ↓
+VSDX → PDF → PNG
+  ↓
+verify_pixel_match.py
+  ↓
+修正坐标 / 字体 / 线条
+  ↓
+交付 VSDX + PDF + QA 结果
+```
+
+Agent 的默认交付物应至少包含：
+
+- 可编辑 `.vsdx`
+- 导出的核对 `.pdf`
+- 像素/几何匹配报告
+- 必要时的 side-by-side 与差异图
+
+详细的坐标映射、VSDX 兼容性要求、Shape 组织方式、QA 阈值和故障恢复规则，都写在 [`SKILL.md`](./SKILL.md) 中。**不要只读 README 就直接生成 VSDX。**
+
 ## 适用场景
 
 - 图片 / 截图转可编辑 Visio
