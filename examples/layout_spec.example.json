@@ -1,9 +1,9 @@
 {
-  "canvas": {"width": 1536, "height": 1152},
-  "mode": "editable_vector_redraw",
-  "keep_raster": ["photos", "book_scans"],
-  "qa": {
-    "pdf_export": true,
-    "pixel_match": true
-  }
+  "canvas": {"width_px": 1536, "height_px": 1152, "dpi": 100},
+  "objects": [
+    {"id": "title", "type": "text", "bbox_px": [70, 22, 900, 48], "text": "示例标题", "style": {"font_size_pt": 18, "bold": true}},
+    {"id": "node_1", "type": "roundrect", "bbox_px": [120, 160, 220, 80], "text": "节点 1"},
+    {"id": "arrow_1", "type": "arrow", "bbox_px": [340, 190, 120, 10]},
+    {"id": "node_2", "type": "roundrect", "bbox_px": [460, 160, 220, 80], "text": "节点 2"}
+  ]
 }
